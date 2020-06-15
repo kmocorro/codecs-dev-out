@@ -45,24 +45,24 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   leftPanelPaper: {
-    marginTop: 20,
+    marginTop: 30,
   },
   rightPanelPaper: {
-    marginTop: 20,
+    marginTop: 30,
   },
   leftPanelResultPaper: {
-    marginTop: 20,
+    marginTop: 30,
     height: 500
   },
   rightPanelResultPaper: {
-    marginTop: 20,
+    marginTop: 50,
     height: 500
   },
   profilePicContainer: {
@@ -72,16 +72,23 @@ const useStyles = makeStyles((theme) => ({
   profilePic: {
     width: '100%',
     height: 'auto',
+    borderRadius: '50%'
   },
   blankLive: {
-    height: 400,
+    height: 500,
   },
   profileCard: {
     marginTop: 10,
-    height: 400
+    height: 500
   },
   profileCardContent: {
     padding: 5
+  },
+  triage: {
+    fontFamily: 'Helvetica'
+  },
+  instruction: {
+    fontFamily: 'Helvetica'
   }
 }));
 
@@ -107,7 +114,7 @@ export default function RecordAttendance(props) {
           <Grid item xs={12} sm={12} md={6} lg={6} >
             <Paper elevation={0} className={classes.leftPanelPaper} >
               <CardContent>
-                <Typography align="left" variant="h6">Have a safe trip home!</Typography>
+                <Typography align="left" variant="h4" className={classes.instruction}>Scan your Barcode ID</Typography>
               </CardContent>
               <Container maxWidth="sm">
                 <TextField
@@ -118,6 +125,7 @@ export default function RecordAttendance(props) {
                   autoFocus
                   onChange={props.handleEmployeeNumberOnChange}
                   value={props.employee_number}
+                  disabled={props.pauseAfterScan}
                 />
                 <Paper elevation={0} className={classes.profileCard}>
                   <CardContent className={classes.profileCardContent}>
@@ -127,14 +135,18 @@ export default function RecordAttendance(props) {
                         <div className={classes.profilePicContainer}>
                           <img src={employeeProfilePic} onError={addDefaultImg} className={classes.profilePic}/>
                         </div>
-                        <Grid container>
-                          <Grid item xs={12} sm={12} md={3} lg={3}>
-                            <Typography align="left" variant="body2" color="textSecondary">Employee No.</Typography>
-                            <Typography align="left" variant="h4" gutterBottom>{props.userData.id}</Typography>
-                          </Grid>
-                          <Grid item xs={12} sm={12} md={9} lg={9}>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} sm={12} md={12} lg={12}>
                             <Typography align="left" variant="body2" color="textSecondary">Name</Typography>
-                            <Typography align="left" variant="h4">{props.userData.name}</Typography>
+                            <Typography align="left" variant="h2">{props.userData.name}</Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={6} lg={6}>
+                            <Typography align="left" variant="body2" color="textSecondary">Employee No.</Typography>
+                            <Typography align="left" variant="h5" gutterBottom>{props.userData.id}</Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={6} lg={6}>
+                            <Typography align="left" variant="body2" color="textSecondary">Log Date</Typography>
+                            <Typography align="left" variant="h5" gutterBottom>{moment(new Date()).format('lll')}</Typography>
                           </Grid>
                         </Grid>
                       </>
@@ -161,46 +173,81 @@ export default function RecordAttendance(props) {
             </Paper>
           </Grid>
         }
-        <Grid item xs={12} sm={12} md={6} lg={6}>
-          {
-            props.userData.id && props.userData.name && props.employee_number ? 
+        {
+          <Grid item xs={12} sm={12} md={6} lg={6}>
             <Paper elevation={0} className={classes.rightPanelPaper} >
               <CardContent>
-                <Paper elevation={2} className={classes.blankLive}>
-                  <CardContent>
-
-                  </CardContent>
-                </Paper>
-                <img src={props.imgSrc} className={classes.profilePic}/>
-              </CardContent>
-              <Container maxWidth="md">
-                <Typography variant="h4" color="textSecondary" align="center" gutterBottom>{moment(new Date()).format('MMMM DD YYYY, h:mm:ss a')}</Typography>
-              </Container>
-            </Paper>
-            :
-            <Paper elevation={0} className={classes.rightPanelPaper} >
-              <CardContent>
-                <Typography align="right" variant="h5" color="textSecondary">Recent Logs</Typography>
-              </CardContent>
-              <Container maxWidth="md">
                 {
-                  props.recentLogs !== 'undefined' && props.recentLogs !== null && props.recentLogs.length > 0 ?
-                    props.recentLogs.slice(0, 5).map((data) => (
-                      <Fragment key={data.date_time}>
-                        <div style={{padding: 10, flex: 1}}>
-                          <Typography variant="h6" color="primary" align="right">{data.employeeNumber} has successfully logged out</Typography>
-                          <Typography variant="body2" color="textSecondary" align="right">{moment(data.date_time).fromNow()}</Typography>
-                        </div>
-                      </Fragment>
-                    ))
+                  props.userData.id && props.userData.name && props.employee_number ? 
+                  <Paper elevation={0} className={classes.rightPanelPaper} >
+                    <CardContent>
+                      <Typography align="right" variant="h5" color="textSecondary">Camera</Typography>
+                    </CardContent>
+                    <Container maxWidth="md">
+                      
+                      <Paper elevation={5} className={classes.blankLive}>
+                        <CardContent>
+
+                        </CardContent>
+                      </Paper>
+                      <img src={props.imgSrc} className={classes.profilePic}/>
+                      {
+                        props.serverResponseMessage.status === 'success' ?
+                        <Alert severity="success">
+                          <AlertTitle>
+                            <Typography align="center" variant="h4">
+                            {moment(new Date()).format('MMMM DD YYYY, h:mm:ss a')}
+                            </Typography>
+                          </AlertTitle>
+                          {props.serverResponseMessage.message}
+                        </Alert>
+                        : props.serverResponseMessage.status === 'failed' ? 
+                          <Alert severity="error">
+                            <AlertTitle>
+                              Error
+                            </AlertTitle>
+                            {/** removed
+                             *  {props.serverResponseMessage.message}
+                            */}
+                            {props.serverResponseMessage.status} - Try Again.
+                          </Alert>
+                          :
+                          <></>
+                      }
+                    </Container>
+                  </Paper>
                   :
-                  <></>
+                  <Paper elevation={0} className={classes.rightPanelPaper} >
+                    <CardContent>
+                      <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {props.userData.name}! Ingat po."</Typography>
+                    </CardContent>
+                    <CardContent>
+                      <Typography align="right" variant="h6" color="textSecondary">Recent Logs</Typography>
+                    </CardContent>
+                    <Container maxWidth="md">
+                      {
+                        props.recentLogs !== 'undefined' && props.recentLogs !== null && props.recentLogs.length > 0 ?
+                          props.recentLogs.slice(0, 5).map((data) => (
+                            <Fragment key={data.date_time}>
+                              <div style={{padding: 4, flex: 1}}>
+                                <Typography variant="h6" color="primary" align="right">{data.employeeNumber} has successfully logged out</Typography>
+                                <Typography variant="body2" color="textSecondary" align="right">{moment(data.date_time).fromNow()}</Typography>
+                              </div>
+                            </Fragment>
+                          ))
+                        :
+                        <></>
+                      }
+                      
+                    </Container>
+                  </Paper>
                 }
-                
-              </Container>
+              </CardContent>
             </Paper>
-          }
-        </Grid>
+          </Grid>
+
+        }
+        
       </Grid>
     </Container>
   );
