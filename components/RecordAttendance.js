@@ -219,7 +219,14 @@ export default function RecordAttendance(props) {
                   :
                   <Paper elevation={0} className={classes.rightPanelPaper} >
                     <CardContent>
-                      <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {props.userData.name}! Ingat po."</Typography>
+                      {
+                        props.userData.name ?
+
+                        <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
+                        :
+
+                        <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
+                      }
                     </CardContent>
                     <CardContent>
                       <Typography align="right" variant="h6" color="textSecondary">Recent Logs</Typography>
