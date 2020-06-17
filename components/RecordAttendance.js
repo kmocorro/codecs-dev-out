@@ -114,7 +114,7 @@ export default function RecordAttendance(props) {
           <Grid item xs={12} sm={12} md={6} lg={6} >
             <Paper elevation={0} className={classes.leftPanelPaper} >
               <CardContent>
-                <Typography align="left" variant="h4" className={classes.instruction}>Scan your Barcode ID</Typography>
+                <Typography align="left" variant="h4" className={classes.instruction}>Scan your Barcode ID to LOGOUT</Typography>
               </CardContent>
               <Container maxWidth="sm">
                 <TextField
