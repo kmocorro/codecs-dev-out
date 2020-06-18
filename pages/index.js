@@ -157,6 +157,14 @@ function Index(props) {
     return () => clearTimeout(timer);
   }, [userData])
 
+  // reset 30 secs
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setUserData('')
+    }, 30000);
+    return () => clearTimeout(timer)
+  })
+
   return (
     <Fragment>
       {/*<AppBar />*/}
