@@ -152,7 +152,7 @@ function Index(props) {
       //setUserData('')
       setPauseAfterScan(false);
       setScan(true)
-    }, 5000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, [userData])
 
