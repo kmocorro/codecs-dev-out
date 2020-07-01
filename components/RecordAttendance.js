@@ -130,26 +130,29 @@ export default function RecordAttendance(props) {
                 <Paper elevation={0} className={classes.profileCard}>
                   <CardContent className={classes.profileCardContent}>
                     {
-                      props.userData.id && props.userData.name ?
-                      <>
-                        <div className={classes.profilePicContainer}>
-                          <img src={employeeProfilePic} onError={addDefaultImg} className={classes.profilePic}/>
-                        </div>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={12} md={12} lg={12}>
-                            <Typography align="left" variant="body2" color="textSecondary">Name</Typography>
-                            <Typography align="left" variant="h2">{props.userData.name}</Typography>
+                      props.serverResponseMessage.status === 'success' ?
+                        props.userData.id && props.userData.name ?
+                        <>
+                          <div className={classes.profilePicContainer}>
+                            <img src={employeeProfilePic} onError={addDefaultImg} className={classes.profilePic}/>
+                          </div>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={12} lg={12}>
+                              <Typography align="left" variant="body2" color="textSecondary">Name</Typography>
+                              <Typography align="left" variant="h2">{props.userData.name}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6} lg={6}>
+                              <Typography align="left" variant="body2" color="textSecondary">Employee No.</Typography>
+                              <Typography align="left" variant="h5" gutterBottom>{props.userData.id}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6} lg={6}>
+                              <Typography align="left" variant="body2" color="textSecondary">Log Date</Typography>
+                              <Typography align="left" variant="h5" gutterBottom>{moment(new Date()).format('lll')}</Typography>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <Typography align="left" variant="body2" color="textSecondary">Employee No.</Typography>
-                            <Typography align="left" variant="h5" gutterBottom>{props.userData.id}</Typography>
-                          </Grid>
-                          <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <Typography align="left" variant="body2" color="textSecondary">Log Date</Typography>
-                            <Typography align="left" variant="h5" gutterBottom>{moment(new Date()).format('lll')}</Typography>
-                          </Grid>
-                        </Grid>
-                      </>
+                        </>
+                        :
+                        <></>
                       :
                       <></>
                     }

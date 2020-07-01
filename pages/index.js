@@ -10,7 +10,7 @@ function Index(props) {
 
   // state for login profile
   const [ loginProfile, setLoginProfile ] = useState('');
-  console.log(loginProfile.username);
+  //console.log(loginProfile.username);
 
   // state for Employee Number
   const [ employee_number, setEmployee_number ] = useState('');
@@ -24,7 +24,7 @@ function Index(props) {
 
   // state for RECORD ATTENDACE response message
   const [ serverResponseMessage, setServerResponseMessage ] = useState('');
-  console.log(serverResponseMessage);
+  //console.log(serverResponseMessage);
 
   // state for User Data
   const [ userData, setUserData ] = useState('');
@@ -32,7 +32,7 @@ function Index(props) {
 
   // state for recent logs
   const [ recentLogs, setRecentLogs ] = useState('');
-  console.log(recentLogs);
+ //console.log(recentLogs);
   
   // state for image capturing
   const [imgSrc, setImgSrc] = useState(null);
@@ -41,6 +41,7 @@ function Index(props) {
 
   // state for new scan remove image
   const [ scan, setScan ] = useState(true);
+
 
   useEffect(() => {
     async function fetchLoginInfo(){
@@ -74,7 +75,6 @@ function Index(props) {
         //const imageSrc = webcamRef.current.getScreenshot();
         //setImgSrc(imageSrc);
         setUserData(await response.json());
-        
         setScan(false);
         
       }
@@ -128,7 +128,6 @@ function Index(props) {
     
   }, [employee_number]);
 
-
   useEffect(() => {
     async function fetchAttendance(){
       let route = 'http://dev-metaspf401.sunpowercorp.com:4000/getattendancelogs'
@@ -142,7 +141,7 @@ function Index(props) {
 
     fetchAttendance();
   }, [userData]);
-
+  
   
   useEffect(() => {
     if(userData.id){
@@ -153,7 +152,7 @@ function Index(props) {
       //setUserData('')
       setPauseAfterScan(false);
       setScan(true)
-    }, 1000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [userData])
 
