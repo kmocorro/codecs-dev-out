@@ -226,7 +226,7 @@ export default function RecordAttendance(props) {
                         {
                           props.userData.name ?
 
-                          <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
+                          <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
                           :
 
                           <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
@@ -257,10 +257,11 @@ export default function RecordAttendance(props) {
                     <CardContent>
                       {
                         props.userData.name ?
-
-                        <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
-                        :
-
+                          props.serverResponseMessage.status === 'success' ?
+                            <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
+                            :
+                            <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
+                          :
                         <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
                       }
                     </CardContent>
