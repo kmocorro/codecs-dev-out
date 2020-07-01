@@ -182,43 +182,76 @@ export default function RecordAttendance(props) {
               <CardContent>
                 {
                   props.userData.id && props.userData.name && props.employee_number ? 
-                  <Paper elevation={0} className={classes.rightPanelPaper} >
-                    <CardContent>
-                      <Typography align="right" variant="h5" color="textSecondary">Camera</Typography>
-                    </CardContent>
-                    <Container maxWidth="md">
-                      
-                      <Paper elevation={5} className={classes.blankLive}>
-                        <CardContent>
+                    props.serverResponseMessage.status === 'success' ?
+                    <Paper elevation={0} className={classes.rightPanelPaper} >
+                      <CardContent>
+                        <Typography align="right" variant="h5" color="textSecondary">Camera</Typography>
+                      </CardContent>
+                      <Container maxWidth="md">
+                        
+                        <Paper elevation={5} className={classes.blankLive}>
+                          <CardContent>
 
-                        </CardContent>
-                      </Paper>
-                      <img src={props.imgSrc} className={classes.profilePic}/>
-                      {
-                        props.serverResponseMessage.status === 'success' ?
-                        <Alert severity="success">
-                          <AlertTitle>
-                            <Typography align="center" variant="h4">
-                            {moment(new Date()).format('MMMM DD YYYY, h:mm:ss a')}
-                            </Typography>
-                          </AlertTitle>
-                          {props.serverResponseMessage.message}
-                        </Alert>
-                        : props.serverResponseMessage.status === 'failed' ? 
-                          <Alert severity="error">
+                          </CardContent>
+                        </Paper>
+                        <img src={props.imgSrc} className={classes.profilePic}/>
+                        {
+                          props.serverResponseMessage.status === 'success' ?
+                          <Alert severity="success">
                             <AlertTitle>
-                              Error
+                              <Typography align="center" variant="h4">
+                              {moment(new Date()).format('MMMM DD YYYY, h:mm:ss a')}
+                              </Typography>
                             </AlertTitle>
-                            {/** removed
-                             *  {props.serverResponseMessage.message}
-                            */}
-                            {props.serverResponseMessage.status} - Try Again.
+                            {props.serverResponseMessage.message}
                           </Alert>
+                          : props.serverResponseMessage.status === 'failed' ? 
+                            <Alert severity="error">
+                              <AlertTitle>
+                                Error
+                              </AlertTitle>
+                              {/** removed
+                               *  {props.serverResponseMessage.message}
+                              */}
+                              {props.serverResponseMessage.status} - Try Again.
+                            </Alert>
+                            :
+                            <></>
+                        }
+                      </Container>
+                    </Paper>
+                    :
+                    <Paper elevation={0} className={classes.rightPanelPaper} >
+                      <CardContent>
+                        {
+                          props.userData.name ?
+
+                          <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
+                          :
+
+                          <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
+                        }
+                      </CardContent>
+                      <CardContent>
+                        <Typography align="right" variant="h6" color="textSecondary">Recent Logs</Typography>
+                      </CardContent>
+                      <Container maxWidth="md">
+                        {
+                          props.recentLogs !== 'undefined' && props.recentLogs !== null && props.recentLogs.length > 0 ?
+                            props.recentLogs.slice(0, 5).map((data) => (
+                              <Fragment key={data.date_time}>
+                                <div style={{padding: 4, flex: 1}}>
+                                  <Typography variant="h6" color="primary" align="right">{data.employeeNumber} has successfully logged out</Typography>
+                                  <Typography variant="body2" color="textSecondary" align="right">{moment(data.date_time).fromNow()}</Typography>
+                                </div>
+                              </Fragment>
+                            ))
                           :
                           <></>
-                      }
-                    </Container>
-                  </Paper>
+                        }
+                        
+                      </Container>
+                    </Paper>
                   :
                   <Paper elevation={0} className={classes.rightPanelPaper} >
                     <CardContent>
