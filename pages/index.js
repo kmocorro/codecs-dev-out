@@ -32,7 +32,7 @@ function Index(props) {
 
   // state for recent logs
   const [ recentLogs, setRecentLogs ] = useState('');
- //console.log(recentLogs);
+ console.log(recentLogs);
   
   // state for image capturing
   const [imgSrc, setImgSrc] = useState(null);
@@ -160,7 +160,7 @@ function Index(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setUserData('')
-    }, 10000);
+    }, 30000);
     return () => clearTimeout(timer)
   }, [userData])
 

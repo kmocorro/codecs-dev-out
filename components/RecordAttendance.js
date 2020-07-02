@@ -224,14 +224,14 @@ export default function RecordAttendance(props) {
                     :
                     <Paper elevation={0} className={classes.rightPanelPaper} >
                       <CardContent>
-                        {
+                        {/*
                           props.userData.name ?
 
                           <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
                           :
 
                           <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
-                        }
+                        */}
                       </CardContent>
                       <CardContent>
                         <Typography align="right" variant="h6" color="textSecondary">Recent Logs</Typography>
@@ -256,7 +256,7 @@ export default function RecordAttendance(props) {
                   :
                   <Paper elevation={0} className={classes.rightPanelPaper} >
                     <CardContent>
-                      {
+                      {/*
                         props.userData.name ?
                           props.serverResponseMessage.status === 'success' ?
                             <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
@@ -264,6 +264,16 @@ export default function RecordAttendance(props) {
                             <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
                           :
                         <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
+                      */}
+                      {
+                        props.userData.name ?
+                          props.serverResponseMessage.status === 'success' ?
+                            <Typography className={classes.triage} align="right" variant="h3" style={{color: 'green'}}>"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
+                          : props.serverResponseMessage.status === 'failed' ?
+                            <Typography className={classes.triage} align="right" variant="h3" color="error">Logout Denied for {(props.userData.name).split(" ")[0]}.</Typography>
+                            : <></>
+                        :
+                      <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Scan to Logout."</Typography>
                       }
                     </CardContent>
                     <CardContent>
