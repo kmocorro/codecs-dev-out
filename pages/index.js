@@ -24,7 +24,7 @@ function Index(props) {
 
   // state for RECORD ATTENDACE response message
   const [ serverResponseMessage, setServerResponseMessage ] = useState('');
-  //console.log(serverResponseMessage);
+  console.log(serverResponseMessage);
 
   // state for User Data
   const [ userData, setUserData ] = useState('');
@@ -80,53 +80,53 @@ function Index(props) {
       }
     }
 
-    fetchAccountInfo().then(() => {
-      
-      if(!scan){
-        async function SubmitToServer(){
-          let routePOST = 'http://dev-metaspf401.sunpowercorp.com:4000/recordattendance'
+    fetchAccountInfo()
 
-          //console.log(imgSrc).then(() => {
-          let responsePOST = await fetch(`${routePOST}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              token: props.token,
-              employeeNumber: userData.id,
-              mode: 'OUT',
-              device: 'EXIT',
-              base64String: imgSrc,
-              triageRes: 'PASS'
-            })
-          })
-
-          if(responsePOST.status === 200){
-            //console.log(await responsePOST.json());
-      
-            setServerResponseMessage(await responsePOST.json());
-          }
-        }
-
-        SubmitToServer().then(() => {
-          if(!scan){
-            async function fetchAttendance(){
-              let route = 'http://dev-metaspf401.sunpowercorp.com:4000/getattendancelogs'
-              
-              let response = await fetch(`${route}/OUT/${loginProfile.username}`)
-          
-              if(response.status === 200){
-                setRecentLogs(await response.json())
-              }
-            }
-
-            fetchAttendance();
-          }
-        });
-      }
-    })
-
-    
   }, [employee_number]);
+
+  useEffect(() => {
+    if(!scan){
+      SubmitToServer().then(() => {
+        if(!scan){
+          fetchAttendance();
+        }
+       });
+    }
+
+    async function SubmitToServer(){
+      let routePOST = 'http://dev-metaspf401.sunpowercorp.com:4000/recordattendance'
+
+      //console.log(imgSrc).then(() => {
+      let responsePOST = await fetch(`${routePOST}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: props.token,
+          employeeNumber: userData.id,
+          mode: 'OUT',
+          device: 'EXIT',
+          base64String: imgSrc,
+          triageRes: 'PASS'
+        })
+      })
+
+      if(responsePOST.status === 200){
+        //console.log(await responsePOST.json());
+        setServerResponseMessage(await responsePOST.json());
+      }
+    }
+      
+    async function fetchAttendance(){
+      let route = 'http://dev-metaspf401.sunpowercorp.com:4000/getattendancelogs'
+      
+      let response = await fetch(`${route}/OUT/${loginProfile.username}`)
+  
+      if(response.status === 200){
+        setRecentLogs(await response.json())
+        setScan(true)
+      }
+    }
+  }, [userData])
 
   useEffect(() => {
     async function fetchAttendance(){
@@ -156,13 +156,13 @@ function Index(props) {
     return () => clearTimeout(timer);
   }, [userData])
 
-  // reset 30 secs
+  // reset 10 secs
   useEffect(() => {
     const timer = setTimeout(() => {
       setUserData('')
-    }, 30000);
+    }, 10000);
     return () => clearTimeout(timer)
-  })
+  }, [userData])
 
   return (
     <Fragment>

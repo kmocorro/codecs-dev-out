@@ -152,7 +152,8 @@ export default function RecordAttendance(props) {
                           </Grid>
                         </>
                         :
-                        <></>
+                        <>
+                        </>
                       :
                       <></>
                     }
@@ -213,7 +214,7 @@ export default function RecordAttendance(props) {
                               {/** removed
                                *  {props.serverResponseMessage.message}
                               */}
-                              {props.serverResponseMessage.status} - Try Again.
+                              {props.serverResponseMessage.message}
                             </Alert>
                             :
                             <></>
