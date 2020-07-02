@@ -126,7 +126,7 @@ function Index(props) {
         setScan(true)
       }
     }
-  }, [userData])
+  }, [employee_number])
 
   useEffect(() => {
     async function fetchAttendance(){
