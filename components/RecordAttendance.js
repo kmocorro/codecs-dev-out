@@ -211,13 +211,13 @@ export default function RecordAttendance(props) {
                           : props.serverResponseMessage.status === 'failed' ? 
                             <Alert severity="error">
                               <AlertTitle>
-                                Error reading barcode...
+                                Response failed. 
                               </AlertTitle>
                               {/** removed
                                *  {props.serverResponseMessage.message}
                               */}
                               <Typography align="center" variant="h2">
-                                Please Try Again.
+                                Logout Denied. Ask your supervisor for your logout station.
                               </Typography>
                             </Alert>
                             :
