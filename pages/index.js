@@ -42,7 +42,88 @@ function Index(props) {
   // state for new scan remove image
   const [ scan, setScan ] = useState(true);
 
+  const handleKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      setUserData('');
+      console.log('Go!');
+  
+      fetchLoginInfo().then(() => {
+        SubmitToServer().then(() => {
+          fetchAccountInfo().then(() => {
+            fetchAttendance();
+          })
+        })
+      })
 
+      async function fetchLoginInfo(){
+        let routePOST = 'http://dev-metaspf401.sunpowercorp.com:4000/getuserprofile'
+        
+        let responsePOST = await fetch(`${routePOST}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token: props.token
+          })
+        })
+  
+        if(responsePOST.status === 200){
+          setLoginProfile(await responsePOST.json());
+        }
+  
+      }
+
+      async function fetchAccountInfo(){
+        let route = 'http://dev-metaspf401.sunpowercorp.com:4848/getaccountinfo'
+        
+        let response = await fetch(`${route}/${employee_number}`)
+    
+        if(response.status === 200){
+          //const imageSrc = webcamRef.current.getScreenshot();
+          //setImgSrc(imageSrc);
+          setUserData(await response.json());
+          setScan(false);
+          
+        }
+      }
+
+      async function SubmitToServer(){
+        let routePOST = 'http://dev-metaspf401.sunpowercorp.com:4000/recordattendance'
+  
+        //console.log(imgSrc).then(() => {
+        let responsePOST = await fetch(`${routePOST}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token: props.token,
+            employeeNumber: employee_number,
+            mode: 'OUT',
+            device: 'EXIT',
+            base64String: imgSrc,
+            triageRes: 'PASS'
+          })
+        })
+  
+        if(responsePOST.status === 200){
+          //console.log(await responsePOST.json());
+          setServerResponseMessage(await responsePOST.json());
+        }
+      }
+      
+      async function fetchAttendance(){
+        let route = 'http://dev-metaspf401.sunpowercorp.com:4000/getattendancelogs'
+        
+        let response = await fetch(`${route}/OUT/${loginProfile.username}`)
+    
+        if(response.status === 200){
+          setRecentLogs(await response.json())
+          setScan(true)
+        }
+      }
+  
+    }
+  }
+
+  /*
   useEffect(() => {
     async function fetchLoginInfo(){
       let routePOST = 'http://dev-metaspf401.sunpowercorp.com:4000/getuserprofile'
@@ -127,6 +208,7 @@ function Index(props) {
       }
     }
   }, [employee_number])
+  */
 
   useEffect(() => {
     async function fetchAttendance(){
@@ -152,7 +234,7 @@ function Index(props) {
       //setUserData('')
       setPauseAfterScan(false);
       setScan(true)
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [userData])
 
@@ -179,6 +261,7 @@ function Index(props) {
           handleEmployeeNumberOnChange={handleEmployeeNumberOnChange}
           serverResponseMessage={serverResponseMessage}
           pauseAfterScan={pauseAfterScan}
+          handleKeyDown={handleKeyDown}
         />
       </Layout>
     </Fragment>

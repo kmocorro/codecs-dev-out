@@ -114,18 +114,23 @@ export default function RecordAttendance(props) {
           <Grid item xs={12} sm={12} md={6} lg={6} >
             <Paper elevation={0} className={classes.leftPanelPaper} >
               <CardContent>
-                <Typography align="left" variant="h4" className={classes.instruction}>Scan your Barcode ID to LOGOUT</Typography>
+                {
+                  props.employee_number === '' ?
+                  <Typography align="left" variant="h3" style={{color: "green"}} className={classes.instruction}>Scan Barcode ID</Typography>
+                  :
+                  <Typography align="left" variant="h3" className={classes.instruction}>Please wait...</Typography>
+                }
               </CardContent>
               <Container maxWidth="sm">
                 <TextField
                   fullWidth
-                  margin="dense"
                   variant="outlined"
-                  label="Scan ID to Enter"
+                  label="Scan ID to Exit"
                   autoFocus
                   onChange={props.handleEmployeeNumberOnChange}
                   value={props.employee_number}
                   disabled={props.pauseAfterScan}
+                  onKeyDown={props.handleKeyDown}
                 />
                 <Paper elevation={0} className={classes.profileCard}>
                   <CardContent className={classes.profileCardContent}>
@@ -182,56 +187,69 @@ export default function RecordAttendance(props) {
             <Paper elevation={0} className={classes.rightPanelPaper} >
               <CardContent>
                 {
-                  props.userData.id && props.userData.name && props.employee_number ? 
-                    props.serverResponseMessage.status === 'success' ?
+                  props.userData.id && props.userData.name ? 
                     <Paper elevation={0} className={classes.rightPanelPaper} >
-                      <CardContent>
-                        <Typography align="right" variant="h5" color="textSecondary">Camera</Typography>
-                      </CardContent>
                       <Container maxWidth="md">
-                        
+                        {/*
                         <Paper elevation={5} className={classes.blankLive}>
                           <CardContent>
 
                           </CardContent>
                         </Paper>
                         <img src={props.imgSrc} className={classes.profilePic}/>
+                        */}
                         {
                           props.serverResponseMessage.status === 'success' ?
                           <Alert severity="success">
                             <AlertTitle>
-                              <Typography align="center" variant="h4">
-                              {moment(new Date()).format('MMMM DD YYYY, h:mm:ss a')}
-                              </Typography>
+                              Logout success!
                             </AlertTitle>
-                            {props.serverResponseMessage.message}
+                            <Typography align="center" variant="h2">
+                              {props.serverResponseMessage.message}!
+                            </Typography>
                           </Alert>
                           : props.serverResponseMessage.status === 'failed' ? 
                             <Alert severity="error">
                               <AlertTitle>
-                                Error
+                                Error reading barcode...
                               </AlertTitle>
                               {/** removed
                                *  {props.serverResponseMessage.message}
                               */}
-                              {props.serverResponseMessage.message}
+                              <Typography align="center" variant="h2">
+                                Please Try Again.
+                              </Typography>
                             </Alert>
                             :
-                            <></>
+                            <>
+                              <Alert severity="error">
+                                <AlertTitle>
+                                  No response from the server...
+                                </AlertTitle>
+                                {/** removed
+                                 *  {props.serverResponseMessage.message}
+                                */}
+                                <Typography align="center" variant="h2">
+                                  Please Try Again.
+                                </Typography>
+                              </Alert>
+                            </>
                         }
                       </Container>
                     </Paper>
                     :
+                    <></>
+                    /*
                     <Paper elevation={0} className={classes.rightPanelPaper} >
                       <CardContent>
-                        {/*
+                        
                           props.userData.name ?
 
                           <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
                           :
 
                           <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
-                        */}
+                        
                       </CardContent>
                       <CardContent>
                         <Typography align="right" variant="h6" color="textSecondary">Recent Logs</Typography>
@@ -253,49 +271,7 @@ export default function RecordAttendance(props) {
                         
                       </Container>
                     </Paper>
-                  :
-                  <Paper elevation={0} className={classes.rightPanelPaper} >
-                    <CardContent>
-                      {/*
-                        props.userData.name ?
-                          props.serverResponseMessage.status === 'success' ?
-                            <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
-                            :
-                            <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
-                          :
-                        <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Thank you! Ingat po."</Typography>
-                      */}
-                      {
-                        props.userData.name ?
-                          props.serverResponseMessage.status === 'success' ?
-                            <Typography className={classes.triage} align="right" variant="h3" style={{color: 'green'}}>"Thank you {(props.userData.name).split(" ")[0]}! Ingat po."</Typography>
-                          : props.serverResponseMessage.status === 'failed' ?
-                            <Typography className={classes.triage} align="right" variant="h3" color="error">Logout Denied for {(props.userData.name).split(" ")[0]}.</Typography>
-                            : <></>
-                        :
-                      <Typography className={classes.triage} align="right" variant="h3" color="textPrimary">"Scan to Logout."</Typography>
-                      }
-                    </CardContent>
-                    <CardContent>
-                      <Typography align="right" variant="h6" color="textSecondary">Recent Logs</Typography>
-                    </CardContent>
-                    <Container maxWidth="md">
-                      {
-                        props.recentLogs !== 'undefined' && props.recentLogs !== null && props.recentLogs.length > 0 ?
-                          props.recentLogs.slice(0, 5).map((data) => (
-                            <Fragment key={data.date_time}>
-                              <div style={{padding: 4, flex: 1}}>
-                                <Typography variant="h6" color="primary" align="right">{data.employeeNumber} has successfully logged out</Typography>
-                                <Typography variant="body2" color="textSecondary" align="right">{moment(data.date_time).fromNow()}</Typography>
-                              </div>
-                            </Fragment>
-                          ))
-                        :
-                        <></>
-                      }
-                      
-                    </Container>
-                  </Paper>
+                  */
                 }
               </CardContent>
             </Paper>
