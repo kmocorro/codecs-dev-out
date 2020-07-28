@@ -85,7 +85,7 @@ export default function SignIn() {
                 })
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 const { token, err } = await response.json();
 
                 console.log(token);
