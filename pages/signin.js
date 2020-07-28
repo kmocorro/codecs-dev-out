@@ -74,41 +74,7 @@ export default function SignIn() {
         setSignInButton(true);
 
         let route = 'http://dev-metaspf401.sunpowercorp.com:4000/login'
-
-        const response = await fetch(route, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-              username: username.value, 
-              password: password.value 
-          })
-        });
-
-        if (response.status === 200) {
-            const { token, err } = await response.json();
-
-            console.log(token);
-            if( typeof token === 'undefined'){
-                //console.log({ err })
-                setResponseError(err ? err : responseError)
-                setSignInButton(false);
-            } else {
-                console.log({ token })
-                await login({ token });
-            }
-            
-            
-        } else {
-            //console.log('Login failed.');
-
-            let error = new Error(response.statusText)
-            error.response = response
-
-            //setResponseError(error)
-
-            throw error
-        }
-        /*
+      
         try {
             const response = await fetch(route, {
                 method: 'POST',
@@ -151,7 +117,6 @@ export default function SignIn() {
             setSignInButton(false);
         }
 
-        */
     }
 
     return (
