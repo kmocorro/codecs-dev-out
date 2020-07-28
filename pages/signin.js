@@ -69,7 +69,7 @@ export default function SignIn() {
     }
 
     async function handleOnSubmit(e){
-       // e.preventDefault();
+        e.preventDefault();
         setResponseError('');
         setSignInButton(true);
 
