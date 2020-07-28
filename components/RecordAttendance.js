@@ -72,14 +72,13 @@ const useStyles = makeStyles((theme) => ({
   profilePic: {
     width: '100%',
     height: 'auto',
-    borderRadius: '50%'
   },
   blankLive: {
     height: 500,
   },
   profileCard: {
     marginTop: 10,
-    height: 500
+    height: 10
   },
   profileCardContent: {
     padding: 5
@@ -93,8 +92,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const videoConstraints = {
-  width: 960,
-  height: 1080,
+  width: 550,
+  height: 415,
   facingMode: "user"
 };
 
@@ -164,20 +163,17 @@ export default function RecordAttendance(props) {
                     }
                   </CardContent>
                 </Paper>
-                {
-                  /*
                 <Webcam
                   audio={false}
                   mirrored={true}
-                  height={'0'}
+                  height={'400'}
                   ref={props.webcamRef}
                   minScreenshotWidth={360}
                   minScreenshotHeight={360}
                   screenshotFormat="image/jpeg"
-                  width={'0'}
+                  width={'535'}
                   videoConstraints={videoConstraints}
                 />
-                */}
               </Container>
             </Paper>
           </Grid>
@@ -190,14 +186,8 @@ export default function RecordAttendance(props) {
                   props.userData.id && props.userData.name ? 
                     <Paper elevation={0} className={classes.rightPanelPaper} >
                       <Container maxWidth="md">
-                        {/*
-                        <Paper elevation={5} className={classes.blankLive}>
-                          <CardContent>
-
-                          </CardContent>
-                        </Paper>
-                        <img src={props.imgSrc} className={classes.profilePic}/>
-                        */}
+                        
+                      <img src={props.imgSrc} className={classes.profilePic}/>
                         {
                           props.serverResponseMessage.status === 'success' ?
                           <Alert severity="success">

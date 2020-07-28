@@ -78,8 +78,8 @@ function Index(props) {
         let response = await fetch(`${route}/${employee_number}`)
     
         if(response.status === 200){
-          //const imageSrc = webcamRef.current.getScreenshot();
-          //setImgSrc(imageSrc);
+          const imageSrc = webcamRef.current.getScreenshot();
+          setImgSrc(imageSrc);
           setUserData(await response.json());
           setScan(false);
           
