@@ -163,6 +163,7 @@ export default function RecordAttendance(props) {
                     }
                   </CardContent>
                 </Paper>
+                {/*
                 <Webcam
                   audio={false}
                   mirrored={true}
@@ -174,6 +175,7 @@ export default function RecordAttendance(props) {
                   width={'535'}
                   videoConstraints={videoConstraints}
                 />
+                */}
               </Container>
             </Paper>
           </Grid>
@@ -187,7 +189,7 @@ export default function RecordAttendance(props) {
                     <Paper elevation={0} className={classes.rightPanelPaper} >
                       <Container maxWidth="md">
                         
-                      <img src={props.imgSrc} className={classes.profilePic}/>
+                      {/*<img src={props.imgSrc} className={classes.profilePic}/>*/}
                         {
                           props.serverResponseMessage.status === 'success' ?
                           <Alert severity="success">

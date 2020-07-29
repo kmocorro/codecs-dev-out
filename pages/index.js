@@ -45,15 +45,17 @@ function Index(props) {
   const handleKeyDown = (e) => {
     if(e.key === 'Enter'){
       setUserData('');
-      console.log('Go!');
   
-      fetchLoginInfo().then(() => {
-        SubmitToServer().then(() => {
-          fetchAccountInfo().then(() => {
-            fetchAttendance();
+      if(employee_number){
+        console.log('Go!');
+        fetchLoginInfo().then(() => {
+          SubmitToServer().then(() => {
+            fetchAccountInfo().then(() => {
+              fetchAttendance();
+            })
           })
         })
-      })
+      }
 
       async function fetchLoginInfo(){
         let routePOST = 'http://dev-metaspf401.sunpowercorp.com:4000/getuserprofile'
@@ -78,8 +80,8 @@ function Index(props) {
         let response = await fetch(`${route}/${employee_number}`)
     
         if(response.status === 200){
-          const imageSrc = webcamRef.current.getScreenshot();
-          setImgSrc(imageSrc);
+          //const imageSrc = webcamRef.current.getScreenshot();
+          //setImgSrc(imageSrc);
           setUserData(await response.json());
           setScan(false);
           
